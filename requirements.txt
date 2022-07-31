@@ -1,2 +1,3 @@
 cocos2d
 pyswip
+scikit-learn

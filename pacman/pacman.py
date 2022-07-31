@@ -4,6 +4,7 @@ import random
 import sys
 import math
 from state import *
+from cocos.director import director
 
 class Laberinto:
     def __init__(self):
@@ -72,7 +73,6 @@ class JuegoPacman(cocos.layer.Layer):
     def __init__(self):
         super(JuegoPacman, self ).__init__()
         self.laberinto=Laberinto()
-
         self.pacman=Pacman(self)
 
         self.atlas_items=pyglet.image.load("resources/comida.png")
