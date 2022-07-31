@@ -1,0 +1,8 @@
+#!/bin/bash
+cd release
+make -j12 parser
+make -j12 colin-clp
+cd ..
+mkdir -p bin
+rm -f bin/colin-clp
+ln -s ../release/colin/colin-clp bin/colin-clp
