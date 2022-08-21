@@ -1,6 +1,6 @@
 class JuegoGato:
-  #Comienza el raton, valor=1
-  def __init__(self,estado=[0]*9,turno=1):
+  #Comienza el raton, valor=-1
+  def __init__(self,estado=[0]*9,turno=-1):
     self.tablero=estado
     self.completo=False
     self.ganador=None
@@ -10,7 +10,7 @@ class JuegoGato:
     self.tablero=[0]*9
     self.completo=False
     self.ganador=None
-    self.jugador=1
+    self.jugador=-1
 
   def generar_jugadas_posibles(self):
     posibles=[]
@@ -58,19 +58,17 @@ class JuegoGato:
     self.tablero[jugada]=0
     self.jugador*=-1
 
-# 1: Ratón (Inicia, es el jugador humano)
-#-1: Gato (Responde, es el computador)
-# cuando gana el gato el valor es -1
-# cuando gana el ratón el valor es 1
+#-1: Ratón (Inicia, es el jugador humano)
+# 1: Gato (Responde, es el computador)
+# cuando gana el gato el valor es 1
+# cuando gana el ratón el valor es -1
 # un empate tiene utilidad 0
 # etapa  1: maximizar
 # etapa -1: minimizar
-# para tener un minimax tradicional, multiplicamos por -1 la utilidad
-# así cuando gana raton: -1, gana gato: 1, y gato es Max
 def minimax(juego,etapa,secuencia,secuencias):
   if juego.estado_final():
     secuencias.append(secuencia.copy())
-    return [-1*juego.calcular_utilidad()]
+    return [juego.calcular_utilidad()]
   if etapa==1:
     valor=[-1000,None]
   else:
@@ -95,7 +93,7 @@ def minimax(juego,etapa,secuencia,secuencias):
 def alfabeta(juego,etapa,alfa,beta,secuencia,secuencias):
   if juego.estado_final():
     secuencias.append(secuencia.copy())
-    return [-1*juego.calcular_utilidad()]
+    return [juego.calcular_utilidad()]
   if etapa==1:
     valor=[-1000,None]
   else:
@@ -106,19 +104,17 @@ def alfabeta(juego,etapa,alfa,beta,secuencia,secuencias):
     secuencia.append(jugada)
     opcion=alfabeta(juego,etapa*-1,alfa,beta,secuencia,secuencias)
     if etapa==1:
-      if valor[0]<opcion[0]:
+      if opcion[0]>valor[0]:
         valor=[opcion[0],jugada]
-      if valor[0]>alfa:
-        alfa=valor[0]
+        alfa=max(alfa,valor[0])
       if valor[0]>=beta:
         juego.deshacer_jugada(jugada)
         secuencia.pop()
         break
     else:
-      if valor[0]>opcion[0]:
+      if opcion[0]<valor[0]:
         valor=[opcion[0],jugada]
-      if valor[0]<beta:
-        beta=valor[0]
+        beta=min(beta,valor[0])
       if valor[0]<=alfa:
         juego.deshacer_jugada(jugada)
         secuencia.pop()
@@ -174,13 +170,23 @@ def negascout(juego,alfa,beta,secuencia,secuencias):
   return m
 
 if __name__ == "__main__":
-  juego=JuegoGato([-1,0,0,0,1,0,1,-1,1],-1)
+  # x |   |  
+  #   | O | 
+  # O | X | O
   o1=[]
   o2=[]
   o3=[]
-  r1=minimax(juego,-1,[],o1)
-  r2=negamax(juego,[],o2)
-  r3=alfabeta(juego,-1,-1000,1000,[],o3)
-  print(r1,o1)
-  print(r2,o2)
-  print(r3,o3)
+  o4=[]
+  juego=JuegoGato([1,0,0,0,-1,0,-1,1,-1],1)
+  r1=minimax(juego,1,[],o1)
+  r2=alfabeta(juego,1,-1000,1000,[],o2)
+  r3=negamax(juego,[],o3)
+  r4=negascout(juego,-1000,1000,[],o4)
+  print("Jugada: ",r1)
+  print("Opciones: ",len(o1),o1)
+  print("Jugada: ",r2)
+  print("Opciones: ",len(o2),o2)
+  print("Jugada: ",r3)
+  print("Opciones: ",len(o3),o3)
+  print("Jugada: ",r4)
+  print("Opciones: ",len(o4),o4)

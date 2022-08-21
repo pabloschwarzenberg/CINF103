@@ -43,10 +43,7 @@ class Gato:
             evento.widget["image"] = self.raton
             if not self.victoria():
                 o=[]
-                #m=aisearch.negascout(self.juego,-1000,1000, [], o)
-                #m=aisearch.alfabeta(self.juego,1,-1000,1000, [], o)
                 m=aisearch.minimax(self.juego, 1, [], o)
-                #m=aisearch.negamax(self.juego,[],o)
                 print(len(o))
                 self.juego.jugar(m[1])
                 self.botones[m[1]//3][m[1]%3]["image"]=self.gato
