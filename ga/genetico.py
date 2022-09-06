@@ -3,7 +3,7 @@ import heapq
 from individuo import *
 
 class AlgoritmoGenetico:
-    def __init__(self,breed_function,stop_function=lambda x: x.generacion<x.generaciones,n=100,p=0.1,g=100):
+    def __init__(self,breed_function,stop_function=lambda x: x.generacion>x.generaciones,n=100,p=0.1,g=100):
         self.poblacion=[]
         self.mejor=None
         self.p=p
