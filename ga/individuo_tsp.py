@@ -33,12 +33,6 @@ class Individuo_tsp(Individuo):
         self.genotipo[i]=self.genotipo[j]
         self.genotipo[j]=aux
 
-    def reparar(self):
-        for i in range(1,self.ciudades+1):
-            if i not in self.genotipo:
-                p=self.genotipo.index(0)
-                self.genotipo[p]=i           
-
     def cruzar(self,other):
         hijo=[0]*self.ciudades
         j=random.randint(0,self.ciudades-1)
@@ -54,6 +48,18 @@ class Individuo_tsp(Individuo):
         nuevo=Individuo_tsp()
         nuevo.genotipo=hijo
         nuevo.reparar()
+        return nuevo
+
+    def reparar(self):
+        for i in range(1,self.ciudades+1):
+            if i not in self.genotipo:
+                p=self.genotipo.index(0)
+                self.genotipo[p]=i           
+
+    def generar_vecino(self):
+        nuevo=Individuo_tsp()
+        nuevo.genotipo=self.genotipo
+        nuevo.mutar()
         return nuevo
 
 if __name__ == "__main__":
