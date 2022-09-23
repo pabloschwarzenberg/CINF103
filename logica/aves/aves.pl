@@ -1,17 +1,60 @@
-:- dynamic disco_facial_corazon/1,penachos/1,rayas_transversales/1,rayas_verticales/1,moteado/1,emplumados/1,forma/2,estrigiforme/1.
+:- dynamic relacion/3,relacion/4.
 
-especie(X,lechuza) :- ave(X),forma(disco_facial(X),corazon).
-especie(X,tucuquere) :- ave(X),penachos(X),not(emplumados(dedos(X))).
-especie(X,nuco) :- ave(X),penachos(X),emplumados(dedos(X)).
-especie(X,concon) :- ave(X),rayas_transversales(pecho(X)).
-especie(X,pequen) :- ave(X),moteado(plumaje(X)).
-especie(X,chuncho_austral) :- ave(X),moteado(alas(X)),cafe(bandas(cola(X))),castano(bandas(cola(X))).
-especie(X,chuncho_nortino) :- ave(X),moteado(alas(X)),cafe(bandas(cola(X))),blanco(bandas(cola(X))).
+ask(Atributo,Valor):-
+relacion(si,Atributo,Valor),
+!.
 
-ave(x).
-moteado(plumaje(x)).
+ask(Atributo,Valor):-
+relacion(no,Atributo,Valor),
+!,fail.
+    
+ask(Atributo,Valor):-
+write(Atributo:Valor),
+write("?(si/no) "),
+read(R),
+asserta(relacion(R,Atributo,Valor)),
+R==si.
 
-% assert(ave(x))
-% assert(disco_facial(x)).
-% assert(forma(disco_facial(x),corazon)).
-% que_es(x).
+ask(Atributo,Objeto,Valor,_):-
+relacion(si,Atributo,Objeto,X),
+X==Valor,
+!.
+
+ask(Atributo,Objeto,Valor,_):-
+relacion(si,Atributo,Objeto,X),
+X\=Valor,
+!,fail.
+    
+ask(Atributo,Objeto,Valor,Opciones):-
+write(Atributo),
+write(" de "),
+write(Objeto),
+write(" es "),
+write(Opciones),
+write("?"),
+read(R),
+member(R,Opciones),
+asserta(relacion(si,Atributo,Objeto,R)),
+R==Valor.
+
+clase(X):-ask(clase,X).
+tiene(X):-ask(tiene,X).
+moteado(X):-ask(moteado,X).
+rayas_transversales(X):-ask(rayas_transversales,X).
+bandas(X):-ask(bandas,X).
+color(X,Y):-ask(color,X,Y,[blanco,castaño,cafe]).
+forma(X,Y):-ask(forma,X,Y,[corazon]).
+
+identificar:-
+retractall(relacion(_,_,_)),
+retractall(relacion(_,_,_,_)),
+especie(X),
+write(X).
+
+especie(chuncho_austral) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),castaño).
+especie(chuncho_nortino) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),blanco).
+especie(lechuza) :- clase(ave),tiene(disco_facial),forma(disco_facial,corazon).
+especie(tucuquere) :- clase(ave),tiene(penachos),not(tiene(dedos_emplumados)).
+especie(nuco) :- clase(ave),tiene(penachos),tiene(dedos_emplumados).
+especie(concon) :- clase(ave),rayas_transversales(pecho).
+especie(pequen) :- clase(ave),moteado(plumaje).
