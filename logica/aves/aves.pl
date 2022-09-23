@@ -1,3 +1,4 @@
+%Merritt, D. (2017). Building expert systems in Prolog. Springer Science & Business Media.
 :- dynamic relacion/3,relacion/4.
 
 ask(Atributo,Valor):-
@@ -33,9 +34,7 @@ write(" es "),
 write(Opciones),
 write("?"),
 read(R),
-member(R,Opciones),
-asserta(relacion(si,Atributo,Objeto,R)),
-R==Valor.
+(member(R,Opciones) -> asserta(relacion(si,Atributo,Objeto,R)),R==Valor; writeln("Opción desconocida"),ask(Atributo,Objeto,Valor,Opciones)).
 
 clase(X):-ask(clase,X).
 tiene(X):-ask(tiene,X).
