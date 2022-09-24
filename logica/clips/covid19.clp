@@ -10,7 +10,7 @@
 
 (deffacts Pacientes
      (Paciente (nombre Juan) (pcr no) (temperatura 37) (sintomas dolor_cabeza tos perdida_olfato))
-     (Paciente (nombre Jose) (pcr no) (temperatura 39) (sintomas tos erdida_gusto))
+     (Paciente (nombre Jose) (pcr no) (temperatura 39) (sintomas tos perdida_gusto))
      (Paciente (nombre Luis) (pcr positivo) (temperatura 39) (sintomas dolor_garganta dolor_cabeza)))
 
 (defrule rule1
