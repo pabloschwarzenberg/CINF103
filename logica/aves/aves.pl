@@ -41,7 +41,7 @@ tiene(X):-ask(tiene,X).
 moteado(X):-ask(moteado,X).
 rayas_transversales(X):-ask(rayas_transversales,X).
 bandas(X):-ask(bandas,X).
-color(X,Y):-ask(color,X,Y,[blanco,castaño,cafe]).
+color(X,Y):-ask(color,X,Y,[blanco,castano,cafe]).
 forma(X,Y):-ask(forma,X,Y,[corazon]).
 
 identificar:-
@@ -50,9 +50,9 @@ retractall(relacion(_,_,_,_)),
 especie(X),
 write(X).
 
-especie(chuncho_austral) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),castaño).
+especie(chuncho_austral) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),castano).
 especie(chuncho_nortino) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),blanco).
-especie(lechuza) :- clase(ave),tiene(disco_facial),forma(disco_facial,corazon).
+sespecie(lechuza) :- clase(ave),tiene(disco_facial),forma(disco_facial,corazon).
 especie(tucuquere) :- clase(ave),tiene(penachos),not(tiene(dedos_emplumados)).
 especie(nuco) :- clase(ave),tiene(penachos),tiene(dedos_emplumados).
 especie(concon) :- clase(ave),rayas_transversales(pecho).
