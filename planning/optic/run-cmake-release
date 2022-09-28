@@ -2,3 +2,4 @@
 
 cd release
 cmake -DCMAKE_BUILD_TYPE=Release ../src
+chmod 700 /optic/src/VALfiles/parsing/fixyywrap
