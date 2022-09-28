@@ -1,0 +1,11 @@
+FROM ubuntu:bionic
+
+RUN mkdir optic
+
+WORKDIR /optic
+
+ADD optic /optic
+
+RUN ./setup.sh
+
+VOLUME [ "/domains" ]

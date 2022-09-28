@@ -1,0 +1,42 @@
+= PDDL support questionnaire =
+
+ * Name of planner:
+
+POPF2
+
+ * Names of team members:
+
+Amanda Coles <amanda.coles@cis.strath.ac.uk>
+Andrew Coles <andrew.coles@cis.strath.ac.uk>
+Maria Fox <maria.fox@cis.strath.ac.uk>
+Derek Long <derek.long@cis.strath.ac.uk>
+
+
+== Tracks ==
+
+The planner is entered in the following '''tracks''' (please remove all options that don't apply; multiple answers possible):
+ * [The planner is entered in the sequential satisficing track.]
+ * [The planner is entered in the temporal satisficing track.]
+
+== Features ==
+
+The planner supports '''object fluents''' in the following way (please remove all options apart from the one that applies):
+ * [The planner only supports predicate representations, no object fluent representations.]
+
+The planner supports '''PDDL types''' in the following way (please remove all options apart from the one that applies):
+ * [The planner supports both representations, and typed representations are preferred.]
+
+The planner supports '''grounded representations''' in the following way (please remove all options apart from the one that applies):
+ * [The planner supports both representations, and representations with schematic operators are preferred.]
+
+The planner supports the following '''optional features''' (please remove all options that don't apply; multiple answers possible):
+ * [The planner supports universal effects ({{{forall}}}) in operators.]
+
+ ( * [It will attempt to support some ADL in preconditions, though only basic constructs like (not (= ?a ?b)) )
+
+The planner supports '''numeric state variables''' in the following way (please remove the one that doesn't apply):
+ * [Numeric state variables are supported.]
+
+The planner supports '''temporal planning''' in the following way (please remove all options apart from the one that applies):
+ * [Durative actions and timed initial literals are supported.]
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+cd release
+make -j1 parser
+make -j4 optic-clp

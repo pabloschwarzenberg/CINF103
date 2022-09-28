@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd static
+cmake -DSTATIC_COLIN=TRUE  -DCMAKE_BUILD_TYPE=Release ../src

@@ -1,0 +1,5 @@
+#!/bin/bash
+cd static
+make -j1 parser
+make -j4 optic-cplex
+make -j4 optic-clp

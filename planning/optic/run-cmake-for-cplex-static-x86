@@ -1,0 +1,40 @@
+#!/bin/bash
+
+export CPLEX="$HOME/ilog/cplex121/lib/x86_debian4.0_4.1/static_pic/libcplex.a"
+
+if [ ! -e "$CPLEX" ]; then
+    echo "$CPLEX is not the libcplex.a library file"
+    exit 1
+fi
+
+export ILOCPLEX="$HOME/ilog/cplex121/lib/x86_debian4.0_4.1/static_pic/libilocplex.a"
+
+if [ ! -e "$ILOCPLEX" ]; then
+    echo "$ILOCPLEX is not the libilocplex.a library file"
+    exit 1
+fi
+
+export CONCERT="$HOME/ilog/concert29/lib/x86_debian4.0_4.1/static_pic/libconcert.a"
+
+if [ ! -e "$CONCERT" ]; then
+    echo "$CONCERT is not the libconcert.a library file"
+    exit 1
+fi
+
+export CPLEX_INCLUDES="$HOME/ilog/cplex121/include"
+
+if [ ! -e "$CPLEX_INCLUDES/ilcplex/ilocplex.h" ]; then
+    echo "$CPLEX_INCLUDES does not point to a path containing ilcplex/ilocplex.h"
+    exit 1
+fi
+
+
+export CONCERT_INCLUDES="$HOME/ilog/concert29/include"
+
+if [ ! -e "$CONCERT_INCLUDES/ilconcert/iloenv.h" ]; then
+    echo "$CONCERT_INCLUDES does not point to a path containing ilconcert/iloenv.h"
+    exit 1
+fi
+
+cd static
+cmake -DCMAKE_VERBOSE_MAKEFILE=TRUE -DSTATIC_OPTIC=TRUE  -DCMAKE_BUILD_TYPE=Release -DCPLEX="$CPLEX" -DILOCPLEX="$ILOCPLEX" -DCONCERT="$CONCERT" -DCPLEX_INCLUDES="$CPLEX_INCLUDES" -DCONCERT_INCLUDES="$CONCERT_INCLUDES" ../src
