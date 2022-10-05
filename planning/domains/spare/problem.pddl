@@ -9,6 +9,5 @@ pinchado repuesto eje maletero
 )
 
 (:goal 
-    (and (En repuesto eje)
-    (En pinchado maletero))
+    (En repuesto eje)
 ))
