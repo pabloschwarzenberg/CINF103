@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd static
-cmake -DSTATIC_OPTIC=TRUE  -DCMAKE_BUILD_TYPE=Release ../src
