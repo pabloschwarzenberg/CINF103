@@ -33,7 +33,7 @@ class AccionEncontrarCamino:
         if len(agent.camino)==0 or agent.camino[-1][0]!=agent.target[0] or agent.camino[-1][1]!=agent.target[1]:
             agent.camino=[]
             origen=agent.laberinto.en_celda(agent.sprite.x,agent.sprite.y)
-            df=AstarFinder(agent)
+            df=BacktrackingFinder(agent)
             df.find(origen,agent.target,agent.camino)
 
 class AccionAvanzar:
