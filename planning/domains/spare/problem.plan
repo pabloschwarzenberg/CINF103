@@ -1,0 +1,10 @@
+;;!domain: mecanica
+;;!problem: reemplazar_neumatico_pinchado
+
+0.00100: (quitar pinchado eje)
+0.00200: (quitar repuesto maletero)
+0.00300: (poner repuesto eje)
+0.00400: (poner pinchado maletero)
+
+; Makespan: 0.004
+; Cost: 0.004

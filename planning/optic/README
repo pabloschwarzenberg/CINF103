@@ -1,0 +1,201 @@
+OPTIC
+-----
+
+This package contains OPTIC, a planner for use in problems where plan cost is
+determined by preferences or time-dependent goal-collection costs.  For more
+details, see the paper "Temporal Planning with Preferences and Time-Dependent 
+Continuous Costs", J. Benton, A. J. Coles, and A. I. Coles, ICAPS 2012.  
+
+OPTIC is derived from the planner POPF.  In the interests of developing a
+single, capable planner, the sources here also contain the TIL-abstraction 
+extension of POPF described in the paper "Automated  Planning for Liner 
+Shipping Fleet Repositioning", K. Tierney, A. J. Coles, A. I. Coles, C. Kroer,
+A. Britt, and R. M. Jensen, ICAPS 2012.  This can be invoked with an extra
+command line flag (details below).
+
+Build Prerequisites
+-------------------
+
+In order to function, OPTIC requires either CLP or CPLEX:
+
+- If you wish to use OPTIC in problems with Preferences or in which TIL
+  abstraction is used, you will need CPLEX.  For academic use, CPLEX can be
+  obtained for free via the IBM Academic Initiative.
+
+- In other cases, CLP should suffice, and is generally faster.
+
+In both cases, you also need:
+
+- cmake
+- perl, bison and flex (used to build the parser)
+
+Packages of these are available for most linux distributions. For Ubuntu, 
+the following should install CLP and the other build pre-requisites:
+
+sudo apt-get install cmake coinor-libcbc-dev coinor-libclp-dev \
+                     coinor-libcoinutils-dev libbz2-dev bison flex
+            
+
+Compiling
+---------
+
+Compilation is in two stages:
+
+1) Configure
+
+Run one of:
+
+run-cmake-debug, if you want to link against CLP, with debugging enabled
+
+run-cmake-for-cplex-debug-x86, if you want to link against CLP and/or CPLEX,
+  with debugging enabled.  It assumes you are using the 32-bit version of
+  CPLEX, on Linux - if this is not the case, edit the script.
+
+run-cmake-release, if you want to link against CLP, with debugging disabled,
+  and producing a non-static binary.
+
+run-cmake-static, if you want to link against CLP, with debugging disabled,
+  and producing a statically linked binary
+
+run-cmake-for-cplex-static-x86, if you want to link against CLP and/or CPLEX,
+  and producing a statically linked binary.    It assumes you are using the
+  32-bit version of CPLEX, on Linux - if this is not the case, edit the
+  script.
+
+
+Note that if you want to make static binaries with CLP, you must have static
+versions of the CLP libraries installed.  This may mean downloading and
+compiling CBC from source, making sure it makes static (not shared) libraries.
+The advantage is that the binary produced does not require CLP to be installed
+at run-time, which can be useful when running it on different machines.
+
+*Users of 64-bit Machines*: it is almost certainly not worth compiling OPTIC
+in 64-bit mode.  To force 32-bit compilation, before running one of the
+scripts above, type:
+
+export CFLAGS=-m32
+export CXXFLAGS=-m32
+export LDFLAGS=-m32
+
+In 32-bit mode, OPTIC it is limited by the number of states it can
+store in 4GB of memory.  To be able to store more states than this, with a
+64-bit binary, considerably more memory is required, as e.g. ints and pointers
+are twice the size.  (If you do have considerably more memory, then of course,
+feel free to try.)
+
+2) Build
+
+If you ran one of the run-*-debug scripts, now run:
+
+./build-debugging
+
+If you ran run-cmake-release, now run:
+
+./build-release
+
+If you ran one of the run-*-static scripts, now run:
+
+./build-static
+
+
+In all three cases, the binaries produced will be called optic-clp and/or
+optic-cplex, and they will be located in either debug/optic, release/optic
+or static/optic, respectively.
+
+
+Running
+-------
+
+Once compiled, run, e.g.:
+
+optic-cplex domain.pddl problem.pddl
+
+This runs OPTIC on the given domain and problem file, carrying on search
+after the first solution in an attempt to optimise quality. If you want to
+ignore solution costs and stop after the first solution, run:
+
+optic-cplex -N domain.pddl problem.pddl
+
+Or, if you have an upper-bound on plan cost, run:
+
+optic-cplex -n<bound> domain.pddl problem.pddl
+
+This is mainly useful if you want, as a first-pass, to search ignoring
+preferences: run with -N, to get a plan with cost <bound>; then run with
+-n<bound> to carry on searching.
+
+To enable TIL abstraction, add the command-line option '-0', e.g.:
+
+optic-cplex -0 domain.pddl problem.pddl
+
+On domains without preferences, and where TIL-abstraction is not enabled.
+it is usually faster to use optic-clp instead of optic-cplex. It is run in the
+same way, e.g.:
+
+optic-clp domain.pddl problem.pddl
+
+If you wish to insist that each solution has to be at least 10 better than
+the last found, run:
+
+optic-clp '->10' domain.pddl problem.pddl
+
+Note that the planner does not, itself, limit its time and/or memory usage.
+Apply these by using the relevant shell commands beforehand, e.g.:
+
+bash
+ulimit -t 1800
+ulimit -v 4000000
+./optic-clp domain.pddl problem.pddl
+
+
+...will limit the planner to 30 minutes of CPU and 4GiB of memory.
+
+
+Feedback
+--------
+
+If you do something exciting with OPTIC, do let us know.  If you tried to do 
+something with it, but it failed, you may have found a bug.  In common with
+POPF, the three most likely sources of bugs are:
+
+The three most common causes of bugs (over 90% of bug reports) are:
+
+- Using ADL. ADL is supported in the conditions of preferences, in the
+  time-dependent costs of goal-collection actions, and one or two other niche
+  cases.  We've attempted to make the planner degrade gracefully, but there are
+  still cases where it will report problems using ADL as being unsolvable.
+  ** In particular check there are no negative preconditions in your domain. **
+  
+- Domain modelling bugs. OPTIC and POPF support the full start--end semantics
+  of PDDL 2.1, and self-overlapping actions, so errors in the temporal
+  placement of preconditions and effects (at start, at end etc.) are more
+  likely to cause issues with POPF than with other planners. For instance, if
+  a 'move' action is written (erroneously) as deleting the old location at the
+  end (rather than at the start), then OPTIC/POPF will consider concurrent move 
+  actions for the same vehicle; whereas planners which do not make as clear a 
+  distinction between the start and end-points of durative actions would not 
+  consider this. Thus, in domains with errors such as this, they might have to
+  consider a far larger search space than other temporal planners.
+
+- If the plans don't validate, ensure you are passing the '-t 0.001' flag to
+  VAL: the planner uses an epsilon value of 0.001, smaller than the default
+  0.01 value used in VAL.
+
+If none of those apply, email as small a possible domain and problem file
+that cause the error you're observing to Andrew Coles:
+firstname.lastname@kcl.ac.uk
+
+
+Licence
+-------
+
+OPTIC is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+OPTIC is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+

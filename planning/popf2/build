@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir -p compile
+cd compile
+make clean
+cmake ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=TRUE 
+make popf3-clp -j8
