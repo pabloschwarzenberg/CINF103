@@ -52,7 +52,7 @@ write(X).
 
 especie(chuncho_austral) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),castano).
 especie(chuncho_nortino) :- clase(ave),moteado(alas),bandas(cola),color(bandas(cola),blanco).
-sespecie(lechuza) :- clase(ave),tiene(disco_facial),forma(disco_facial,corazon).
+especie(lechuza) :- clase(ave),tiene(disco_facial),forma(disco_facial,corazon).
 especie(tucuquere) :- clase(ave),tiene(penachos),not(tiene(dedos_emplumados)).
 especie(nuco) :- clase(ave),tiene(penachos),tiene(dedos_emplumados).
 especie(concon) :- clase(ave),rayas_transversales(pecho).
